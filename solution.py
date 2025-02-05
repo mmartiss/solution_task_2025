@@ -1,5 +1,16 @@
-# fuel consumption = base fuel * distance * (1+total weight/max capacity)
+def fuel_consumption(base_fuel, distance, total_weight, max_capacity):
+    """
+    fuel_consumption does the calculation of total fuel needed for a trip based on base fuel, 
+    distance, total weight and max capacity
 
+    base_fuel: int, initial fuel consumption per unit distance without any load
+    distance: int, distance to be travelled
+    total_weight: int, total weight of the packages
+    max_capacity: int, maximum capacity of the van
+
+    return: int, total fuel needed for the trip
+    """
+    return base_fuel * distance * (1 + total_weight / max_capacity)
 
 def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
     tuple[int, int], list[tuple[int, str]], int, int]:
