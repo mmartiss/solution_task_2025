@@ -12,6 +12,10 @@ def fuel_consumption(base_fuel, distance, total_weight, max_capacity):
     """
     return base_fuel * distance * (1 + total_weight / max_capacity)
 
+def route(van_stats, packages):
+    packages = sorted(packages, key=lambda x: abs(x[0])) # Sorting packages by distance from starting point
+    
+
 def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
     tuple[int, int], list[tuple[int, str]], int, int]:
     # TODO: Replace this with a real implementation:
