@@ -18,14 +18,45 @@ def fuel_consumption(base_fuel, distance, total_weight, max_capacity):
 def choose_next_package(van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed):
     nearest_location = None
     min_distance = float('inf')  #nustatom infinite, kad butu su kuom palyginti
-    current_load = 0
-    for i in pick_up_locations:
-    # patikrinti ar package nebuvo paimtas ir ar telpa i van
-        if i not in picked_up and current_load + package_weight[i] <= van[0]: 
-            distance = abs(van_position - i)
+    action = None # pick or drop, also tmp
+    package_index = None
+
+    # iteruojam per visas packages ir tuo paciu istraukiam data is packages
+    for i, (pickup, drop, weight) in enumerate(packages):
+        #rinktis arciausia ir jei telpa
+        if i not in picked_up and current_load + weight <= van[0]: 
+            distance = abs(van_position - pickup)
             if(distance < min_distance):
                 min_distance = distance
-                nearest_location = i
+                nearest_location = pickup
+                action = "pick" #nustatom koks action
+                package_index = i #issisaugom, kad veliau zinotume kuris paimtas
+        # jei paimtas, bet nepristatytas
+        elif i in picked_up and i not in dropped_off:
+            distance = abs(van_position - drop)
+            if(distance < min_distance):
+                min_distance = distance
+                nearest_location = drop
+                action = "drop"
+                package_index = i
+    
+    # jei radom artimiausia vieta automatiskai atrinke ar paimtas ar ne, ir ka daryti
+    #!!!!!
+    # reikia logiskai isnagrineti ar tai tikriausiai geriausias action ir kelio pasirinkimas
+
+    if nearest_location is not None:
+        # pridedam i route
+        route.append((nearest_location, action))
+        route_length += min_distance
+
+
+    # for i in pick_up_locations:
+    # # patikrinti ar package nebuvo paimtas ir ar telpa i van
+    #     if i not in picked_up and current_load + package_weight[i] <= van[0]: 
+    #         distance = abs(van_position - i)
+    #         if(distance < min_distance):
+    #             min_distance = distance
+    #             nearest_location = i
 
     route.append((nearest_location, 'pick'))
     route_length += min_distance
