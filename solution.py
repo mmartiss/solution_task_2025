@@ -12,12 +12,24 @@ def fuel_consumption(base_fuel, distance, total_weight, max_capacity):
     """
     return base_fuel * distance * (1 + total_weight / max_capacity)
 
-def route(van_stats, packages):
-    packages = sorted(packages, key=lambda x: abs(x[0])) # Sorting packages by distance from starting point
-    
-
 # tikslo funckija, kaip mawtematine vektorine funkcija
 #  arba kriterinis, apsirasai dvi funkcijas, kuri apibrezia pickup ir drop
+
+def choose_next_package(van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed):
+    nearest_location = None
+    min_distance = float('inf')  #nustatom infinite, kad butu su kuom palyginti
+    current_load = 0
+    for i in pick_up_locations:
+    # patikrinti ar package nebuvo paimtas ir ar telpa i van
+        if i not in picked_up and current_load + package_weight[i] <= van[0]: 
+            distance = abs(van_position - i)
+            if(distance < min_distance):
+                min_distance = distance
+                nearest_location = i
+
+    route.append((nearest_location, 'pick'))
+    route_length += min_distance
+    fuel_consumed += fuel_consumption(van[1], min_distance, package_weight[pick_up_locations.index(nearest_location)], van[0])
 
 
 
@@ -25,25 +37,20 @@ def route(van_stats, packages):
 def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
     tuple[int, int], list[tuple[int, str]], int, int]:
     # TODO: Replace this with a real implementation:
-    route = []
-    picked_up = []
-    dropped_off = []
-    van_postion = 0
-    packages = sorted(packages, key=lambda x: abs(x[0]))
-    pick_up_locations = [x[0] for x in packages]
-    drop_off_lactions = [x[1] for x in packages]
-    package_weight = [x[2] for x in packages]
+    chosen_van = None
 
-    for i in (len(packages)*2+2):
-        if i == 0:
-            route.append((0, 'start'))
-        elif i == len(packages)*2+1:
-            route.append((0, 'end'))
+    for van in van_stats:
+        # man sios funkcijos riekia, nes skiriasi vans capacity ir fuel consumption
+        picked_up = []
+        dropped_off = []
+        route = [(0, "start")]
+        route_length = 0
+        fuel_consumed = 0
+        van_position = 0
+        current_load = 0
 
-        # paimti arciausia
-    def choose_next_package(picked_up, dropped_off, packages, van_stats):
-        if(packages)
-
+        # cia kviesiu choose_next_package function
+        #reikia palyginti vieno van su kitu keliones, by fuel ir distance
 
 
 
