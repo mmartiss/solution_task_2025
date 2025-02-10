@@ -15,6 +15,8 @@ def fuel_consumption(base_fuel, distance, total_weight, max_capacity):
 # tikslo funckija, kaip mawtematine vektorine funkcija
 #  arba kriterinis, apsirasai dvi funkcijas, kuri apibrezia pickup ir drop
 
+#greedy algo
+
 def choose_next_package(van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed):
     nearest_location = None
     min_distance = float('inf')  #nustatom infinite, kad butu su kuom palyginti
@@ -48,8 +50,12 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
         # pridedam i route
         route.append((nearest_location, action))
         route_length += min_distance
+        
+        fuel_consumed += fuel_consumption(van[1], min_distance, current_load, van[0])
+        picked_up.append(package_index) if action == "pick" else dropped_off.append(package_index)
+        current_load += packages[package_index][2] if action == "pick" else -packages[package_index][2]
 
-
+    return nearest_location, route, route_length, fuel_consumed, current_load
     # for i in pick_up_locations:
     # # patikrinti ar package nebuvo paimtas ir ar telpa i van
     #     if i not in picked_up and current_load + package_weight[i] <= van[0]: 
@@ -58,9 +64,9 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
     #             min_distance = distance
     #             nearest_location = i
 
-    route.append((nearest_location, 'pick'))
-    route_length += min_distance
-    fuel_consumed += fuel_consumption(van[1], min_distance, package_weight[pick_up_locations.index(nearest_location)], van[0])
+    # route.append((nearest_location, 'pick'))
+    # route_length += min_distance
+    # fuel_consumed += fuel_consumption(van[1], min_distance, package_weight[pick_up_locations.index(nearest_location)], van[0])
 
 
 
