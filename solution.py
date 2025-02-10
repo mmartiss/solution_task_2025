@@ -16,15 +16,45 @@ def route(van_stats, packages):
     packages = sorted(packages, key=lambda x: abs(x[0])) # Sorting packages by distance from starting point
     
 
+# tikslo funckija, kaip mawtematine vektorine funkcija
+#  arba kriterinis, apsirasai dvi funkcijas, kuri apibrezia pickup ir drop
+
+
+
+#heuristinis recursive backracking algo
 def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
     tuple[int, int], list[tuple[int, str]], int, int]:
     # TODO: Replace this with a real implementation:
-    return (
-        (9, 8),
-        [(0, 'start'), (-1, 'pick'), (-2, 'pick'), (5, 'drop'), (9, 'drop'), (6, 'pick'), (2, 'drop'), (0, 'end')],
-        22,
-        176
-    )
+    route = []
+    picked_up = []
+    dropped_off = []
+    van_postion = 0
+    packages = sorted(packages, key=lambda x: abs(x[0]))
+    pick_up_locations = [x[0] for x in packages]
+    drop_off_lactions = [x[1] for x in packages]
+    package_weight = [x[2] for x in packages]
+
+    for i in (len(packages)*2+2):
+        if i == 0:
+            route.append((0, 'start'))
+        elif i == len(packages)*2+1:
+            route.append((0, 'end'))
+
+        # paimti arciausia
+    def choose_next_package(picked_up, dropped_off, packages, van_stats):
+        if(packages)
+
+
+
+
+
+
+    # return (
+    #     (9, 8),
+    #     [(0, 'start'), (-1, 'pick'), (-2, 'pick'), (5, 'drop'), (9, 'drop'), (6, 'pick'), (2, 'drop'), (0, 'end')],
+    #     22,
+    #     176
+    # )
 
 if __name__ == "__main__":
     # This is an example test for Base goal. When evaluating the task, more will be added:
