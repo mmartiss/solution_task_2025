@@ -50,12 +50,12 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
         # pridedam i route
         route.append((nearest_location, action))
         route_length += min_distance
-        
+        van_position = nearest_location
         fuel_consumed += fuel_consumption(van[1], min_distance, current_load, van[0])
         picked_up.append(package_index) if action == "pick" else dropped_off.append(package_index)
         current_load += packages[package_index][2] if action == "pick" else -packages[package_index][2]
 
-    return nearest_location, route, route_length, fuel_consumed, current_load
+    return nearest_location, route, route_length, fuel_consumed, current_load, van_position
     # for i in pick_up_locations:
     # # patikrinti ar package nebuvo paimtas ir ar telpa i van
     #     if i not in picked_up and current_load + package_weight[i] <= van[0]: 
@@ -68,13 +68,13 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
     # route_length += min_distance
     # fuel_consumed += fuel_consumption(van[1], min_distance, package_weight[pick_up_locations.index(nearest_location)], van[0])
 
-
-
-#heuristinis recursive backracking algo
 def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
     tuple[int, int], list[tuple[int, str]], int, int]:
     # TODO: Replace this with a real implementation:
     chosen_van = None
+    chosen_route = None
+
+    minimum_fuel = float('inf')
 
     for van in van_stats:
         # man sios funkcijos riekia, nes skiriasi vans capacity ir fuel consumption
@@ -85,12 +85,30 @@ def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages
         fuel_consumed = 0
         van_position = 0
         current_load = 0
+        nearest_location = None
 
         # cia kviesiu choose_next_package function
         #reikia palyginti vieno van su kitu keliones, by fuel ir distance
+        # kadangi tai not nercursive fukcija, su while loop eisim per ja, maziau resursu naudots
 
+        while len(dropped_off) < len(packages):
+            # choose_next_package funkcijos output
+            nearest_location, route, route_length, fuel_consumed, current_load, van_position = choose_next_package(
+                van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed
+            )
+            if nearest_location is None:
+                break
+        
+        route.append((0, "end"))
+        route_length += abs(van_position - 0)
+        fuel_consumed += fuel_consumption(van[1], abs(van_position - 0), current_load, van[0])
 
+        if(fuel_consumed < minimum_fuel):
+            minimum_fuel = fuel_consumed
+            chosen_van = van
+            chosen_route = route
 
+# truksta return statement
 
 
     # return (
@@ -114,3 +132,11 @@ if __name__ == "__main__":
     assert fuel_consumption == 176
 
     print("ALL TESTS PASSED")
+
+
+
+
+
+
+
+
