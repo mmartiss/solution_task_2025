@@ -8,6 +8,9 @@ recursive backtracking algorithm, but I have not implemented it yet and
 sadly I do not know how to, at least for now.
 I could have used AI to write it, but in my opinion,
 it defeats the purpose of the task.
+
+If you want to see the github repository's history, here is the link:
+https://github.com/mmartiss/solution_task_2025
 """
 
 def choose_next_package(van, van_position, packages, picked_up, dropped_off,
