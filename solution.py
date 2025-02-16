@@ -1,22 +1,24 @@
 #greedy algo
 
-def choose_next_package(van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed):
+def choose_next_package(van, van_position, packages, picked_up, dropped_off,
+    current_load, route, route_length, fuel_consumed):
     nearest_location = None
-    min_distance = float('inf')  #nustatom infinite, kad butu su kuom palyginti
-    action = None # pick or drop, also tmp
+    min_distance = float('inf')  
+    # Make it infinite, so we would have something to compare to
+    action = None # Pick or drop, also tmp
     package_index = None
 
-    # iteruojam per visas packages ir tuo paciu istraukiam data is packages
+    # Iterations through all packages and extraction of data from packages
     for i, (pickup, drop, weight) in enumerate(packages):
-        #rinktis arciausia ir jei telpa
+        # Choose the closest one and if it fits
         if i not in picked_up and current_load + weight <= van[0]: 
             distance = abs(van_position - pickup)
             if(distance < min_distance):
                 min_distance = distance
                 nearest_location = pickup
-                action = "pick" #nustatom koks action
-                package_index = i #issisaugom, kad veliau zinotume kuris paimtas
-        # jei paimtas, bet nepristatytas
+                action = "pick" # Setting the acrtion
+                package_index = i 
+        # If its taken but not dropped off
         elif i in picked_up and i not in dropped_off:
             distance = abs(van_position - drop)
             if(distance < min_distance):
@@ -26,7 +28,7 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
                 package_index = i
     
     if nearest_location is not None:
-        # pridedam i route
+        # Adding to route
         route.append((nearest_location, action))
         route_length += min_distance
         van_position = nearest_location
@@ -56,12 +58,8 @@ def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages
         current_load = 0
         nearest_location = None
 
-        # cia kviesiu choose_next_package function
-        #reikia palyginti vieno van su kitu keliones, by fuel ir distance
-        # kadangi tai not nercursive fukcija, su while loop eisim per ja, maziau resursu naudots
-
         while len(dropped_off) < len(packages):
-            # choose_next_package funkcijos output
+            # choose_next_package function's output
             nearest_location, route, route_length, fuel_consumed, current_load, van_position = choose_next_package(
                 van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed
             )
@@ -105,11 +103,4 @@ if __name__ == "__main__":
     # assert fuel_consumption == 176
 
     # print("ALL TESTS PASSED")
-
-
-
-
-
-
-
-
+    
