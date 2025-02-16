@@ -1,4 +1,14 @@
-#greedy algo
+"""
+CCT BE academy task 2025 solution by Martynas Abraitis.
+
+I have implemented a greedy algorithm to solve this problem.
+The algorithm is simple and efficient, but it is not the most optimal solution.
+It does not find all best routes. I have the logical solution for
+recursive backtracking algorithm, but I have not implemented it yet and
+sadly I do not know how to, at least for now.
+I could have used AI to write it, but in my opinion,
+it defeats the purpose of the task.
+"""
 
 def choose_next_package(van, van_position, packages, picked_up, dropped_off,
     current_load, route, route_length, fuel_consumed):
