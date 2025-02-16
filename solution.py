@@ -2,6 +2,19 @@
 
 def choose_next_package(van, van_position, packages, picked_up, dropped_off,
     current_load, route, route_length, fuel_consumed):
+    """
+    choose_next_package function chooses the next package to be picked up 
+    or dropped off. It chooses the closest package to the van's current
+    position and checks if it fits in the van. If not, it checks if it
+    can drop off a package. If a package is picked up, it is added to the
+    route and the van's current position is updated. 
+
+    Args:
+        van, van_position, packages, picked_up, dropped_off,
+        current_load, route, route_length, fuel_consumed
+    Returns:
+        nearest_location, route, route_length, fuel_consumed, current_load, van_position
+    """
     nearest_location = None
     min_distance = float('inf')  
     # Make it infinite, so we would have something to compare to
@@ -39,8 +52,27 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off,
 
     return nearest_location, route, route_length, fuel_consumed, current_load, van_position
 
-def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
-    tuple[int, int], list[tuple[int, str]], int, int]:
+def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: 
+    list[tuple[int, int, int]]) -> tuple[tuple[int, int], list[tuple[int, str]], int, int]:
+    """
+    find_optima_route_for_single_van function chooses the most fuel efficient route and van
+    
+    It takes output from choose_next_package function and iterates through all vans to find the
+    most fuel efficient route. 
+    It then returns the chosen van, route, route length and fuel consumed.
+
+    Args:
+        van_stats, packages
+
+    Returns:
+        chosen_van, chosen_route, route_length, minimum_fuel
+
+    Asked format for the output:
+        (9, 8),
+        [(0, 'start'), (-1, 'pick'), (-2, 'pick'), (5, 'drop'), (9, 'drop'), (6, 'pick'), (2, 'drop'), (0, 'end')],
+        22,
+        176
+    """
     # TODO: Replace this with a real implementation:
     chosen_van = None
     chosen_route = None
@@ -48,7 +80,6 @@ def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages
     minimum_fuel = float('inf')
 
     for van in van_stats:
-        # man sios funkcijos riekia, nes skiriasi vans capacity ir fuel consumption
         picked_up = []
         dropped_off = []
         route = [(0, "start")]
@@ -60,8 +91,10 @@ def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages
 
         while len(dropped_off) < len(packages):
             # choose_next_package function's output
-            nearest_location, route, route_length, fuel_consumed, current_load, van_position = choose_next_package(
-                van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed
+            nearest_location, route, route_length, fuel_consumed, current_load, 
+            van_position = choose_next_package(
+                van, van_position, packages, picked_up, dropped_off, current_load, route, 
+                route_length, fuel_consumed
             )
             if nearest_location is None:
                 break
