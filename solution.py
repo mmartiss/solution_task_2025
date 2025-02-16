@@ -1,22 +1,3 @@
-# Apparently this function is not needed, because I thought the fuel consumtion
-# Is calculated differantly.
-def fuel_consumption(base_fuel, distance, total_weight, max_capacity):
-    """
-    fuel_consumption does the calculation of total fuel needed for a trip based on base fuel, 
-    distance, total weight and max capacity
-
-    base_fuel: int, initial fuel consumption per unit distance without any load
-    distance: int, distance to be travelled
-    total_weight: int, total weight of the packages
-    max_capacity: int, maximum capacity of the van
-
-    return: int, total fuel needed for the trip
-    """
-    return base_fuel * distance * (1 + total_weight / max_capacity)
-
-# tikslo funckija, kaip mawtematine vektorine funkcija
-#  arba kriterinis, apsirasai dvi funkcijas, kuri apibrezia pickup ir drop
-
 #greedy algo
 
 def choose_next_package(van, van_position, packages, picked_up, dropped_off, current_load, route, route_length, fuel_consumed):
@@ -44,10 +25,6 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
                 action = "drop"
                 package_index = i
     
-    # jei radom artimiausia vieta automatiskai atrinke ar paimtas ar ne, ir ka daryti
-    #!!!!!
-    # reikia logiskai isnagrineti ar tai tikriausiai geriausias action ir kelio pasirinkimas
-
     if nearest_location is not None:
         # pridedam i route
         route.append((nearest_location, action))
@@ -59,17 +36,6 @@ def choose_next_package(van, van_position, packages, picked_up, dropped_off, cur
         current_load += packages[package_index][2] if action == "pick" else -packages[package_index][2]
 
     return nearest_location, route, route_length, fuel_consumed, current_load, van_position
-    # for i in pick_up_locations:
-    # # patikrinti ar package nebuvo paimtas ir ar telpa i van
-    #     if i not in picked_up and current_load + package_weight[i] <= van[0]: 
-    #         distance = abs(van_position - i)
-    #         if(distance < min_distance):
-    #             min_distance = distance
-    #             nearest_location = i
-
-    # route.append((nearest_location, 'pick'))
-    # route_length += min_distance
-    # fuel_consumed += fuel_consumption(van[1], min_distance, package_weight[pick_up_locations.index(nearest_location)], van[0])
 
 def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages: list[tuple[int, int, int]]) -> tuple[
     tuple[int, int], list[tuple[int, str]], int, int]:
@@ -104,7 +70,7 @@ def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages
         
         route.append((0, "end"))
         route_length += abs(van_position - 0)
-        fuel_consumed += fuel_consumption(van[1], abs(van_position - 0), current_load, van[0])
+        fuel_consumed += van[1] * abs(van_position - 0)
 
         if(fuel_consumed < minimum_fuel):
             minimum_fuel = fuel_consumed
@@ -112,8 +78,6 @@ def find_optimal_route_for_single_van(van_stats: list[tuple[int, int]], packages
             chosen_route = route
 
     return chosen_van, chosen_route, route_length, minimum_fuel
-# truksta return statement
-
 
     # return (
     #     (9, 8),
